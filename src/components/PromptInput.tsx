@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isValidPromptLength, MAX_PROMPT_LENGTH } from '../utils/promptValidation';
 
 interface PromptInputProps {
   onGenerate: (prompt: string) => void;
@@ -16,10 +17,12 @@ const EXAMPLES = [
 
 export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
   const [prompt, setPrompt] = useState('');
+  const isPromptLengthValid = isValidPromptLength(prompt);
+  const isPromptTooLong = !isPromptLengthValid;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (prompt.trim() && !isLoading) {
+    if (prompt.trim() && isPromptLengthValid && !isLoading) {
       onGenerate(prompt.trim());
     }
   };
@@ -35,22 +38,30 @@ export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
         <h2>무엇을 만들까요?</h2>
       </div>
       <form onSubmit={handleSubmit} className="prompt-form">
-        <textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="예: 고객 목록 테이블 위에 들어갈 검색 필터 바를 만들어줘. 상태, 담당자, 날짜 범위 필터가 필요해."
-          className="prompt-textarea"
-          rows={3}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-              handleSubmit(e);
-            }
-          }}
-        />
+        <div className="prompt-field">
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="예: 고객 목록 테이블 위에 들어갈 검색 필터 바를 만들어줘. 상태, 담당자, 날짜 범위 필터가 필요해."
+            className="prompt-textarea"
+            maxLength={MAX_PROMPT_LENGTH}
+            rows={3}
+            aria-invalid={isPromptTooLong || undefined}
+            aria-describedby={isPromptTooLong ? 'prompt-length-error' : undefined}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                handleSubmit(e);
+              }
+            }}
+          />
+          <span className="prompt-meter" aria-live="polite">
+            {prompt.length} / {MAX_PROMPT_LENGTH}
+          </span>
+        </div>
         <button
           type="submit"
           className="btn-generate"
-          disabled={!prompt.trim() || isLoading}
+          disabled={!prompt.trim() || !isPromptLengthValid || isLoading}
         >
           {isLoading ? (
             <span className="loading-spinner">생성 중...</span>
@@ -59,6 +70,11 @@ export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
           )}
         </button>
       </form>
+      {isPromptTooLong && (
+        <p id="prompt-length-error" className="prompt-length-error" role="alert">
+          프롬프트는 {MAX_PROMPT_LENGTH}자 이하로 입력해주세요.
+        </p>
+      )}
       <div className="prompt-examples">
         <span className="examples-label">예시 프롬프트</span>
         {EXAMPLES.map((example) => (
