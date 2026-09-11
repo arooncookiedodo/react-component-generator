@@ -8,7 +8,7 @@
 
 - React 19와 TypeScript를 사용한다. 새 브라우저 API 사용은 jsdom 테스트 환경에서 동작 여부를 확인한다.
 - 생성 코드는 `LiveProvider`에 `noInline`으로 전달된다. 일반 JSX에 원문 코드를 삽입하거나 `dangerouslySetInnerHTML`로 대체하지 않는다. 근거: `components/LivePreview.tsx:14-18`.
-- API 키는 컴포넌트 상태에서만 다루고 저장소나 브라우저 영속 저장소에 추가하지 않는다. 현재 요청 본문에만 조건부로 포함된다. 근거: `App.tsx:14-20`, `hooks/useComponentGenerator.ts:18-26`.
+- API 키는 컴포넌트 상태에서 다루고 현재 요청 본문에만 조건부로 포함한다. 사용자가 명시적으로 요청한 경우에만 이 브라우저의 `localStorage`에 영속화할 수 있으며, 저장소·로그·응답·번들 환경변수에는 추가하지 않는다. 근거: `App.tsx`, `utils/persistence.ts`, `hooks/useComponentGenerator.ts`.
 
 ## Implementation Patterns
 
