@@ -6,9 +6,9 @@
 
 :root {
   color-scheme: light;
-  color: #152527;
-  background: #789d82;
-  font-family: 'Trebuchet MS', Arial, sans-serif;
+  color: #24263c;
+  background: #d8d2c5;
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -17,14 +17,11 @@
 body {
   min-width: 320px;
   min-height: 100vh;
-  background-color: #789d82;
+  background-color: #d8d2c5;
   background-image:
-    linear-gradient(45deg, rgba(17, 42, 42, 0.1) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(17, 42, 42, 0.1) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(17, 42, 42, 0.1) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(17, 42, 42, 0.1) 75%);
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
-  background-size: 20px 20px;
+    linear-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.28) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 button,
@@ -40,6 +37,6 @@ button:focus-visible,
 select:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid #d84b9b;
+  outline: 3px solid #5065d6;
   outline-offset: 3px;
 }
